@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="net.sf.ehcache.configurationResourceName">ehcache/ehcache.xml</prop>
+                <prop key="hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+
+        <property name="mappingResources">
+            <list>
+                <value>org.example.entity.Bank</value>
+                <value>org.example.entity.Branch</value>
+                <value>org.example.entity.FinancialProfile</value>
+                <value>org.example.entity.Loan</value>
+                <value>org.example.entity.Account</value>
+                <value>org.example.entity.CustomerAccount</value>
+                <value>org.example.entity.Customer</value>
+                <value>org.example.entity.CustomerInfo</value>
+            </list>
+        </property>
+    </bean>
+</beans>
