@@ -6,7 +6,6 @@ import org.example.service.BankService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class BankServiceImpl implements BankService {
 
@@ -18,11 +17,18 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public List<Map<String, String>> getBankCodes() {
-        return bankDao.getBankCodes();
+        List<Map<String, String>> bankCodes = bankDao.getBankCodes();
+
+        if (bankCodes.isEmpty()) {
+            throw new IllegalStateException("No banks in system");
+        }
+
+        return bankCodes;
     }
 
     @Override
-    public Optional<Bank> getBankByCode(String code) {
-        return bankDao.getBankByCode(code);
+    public Bank getBankByCode(String code) {
+        return bankDao.getBankByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Incorrect bank code!"));
     }
 }

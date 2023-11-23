@@ -6,9 +6,11 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="loanServiceImpl" class="org.example.service.impl.LoanServiceImpl">
         <constructor-arg ref="loanDaoImpl"/>
+        <constructor-arg ref="financialProfileServiceImpl"/>
     </bean>
     <bean id="accountServiceImpl" class="org.example.service.impl.AccountServiceImpl">
         <constructor-arg ref="accountDaoImpl"/>
+        <constructor-arg ref="financialProfileServiceImpl"/>
     </bean>
     <bean id="bankServiceImpl" class="org.example.service.impl.BankServiceImpl">
         <constructor-arg ref="bankDaoImpl"/>

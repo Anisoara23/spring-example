@@ -4,7 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+          destroy-method="destroy">
         <property name="dataSource">
             <ref bean="dataSource"/>
         </property>
@@ -34,5 +35,8 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
             </list>
         </property>
     </bean>
-    <bean id="session" factory-bean="sessionFactory" factory-method="openSession"/>
+    <bean id="session"
+          factory-bean="sessionFactory"
+          factory-method="openSession"
+          destroy-method="close"/>
 </beans>

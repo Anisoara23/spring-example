@@ -18,7 +18,6 @@ import org.example.service.CustomerService;
 import org.example.service.FinancialProfileService;
 import org.example.service.LoanService;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -50,22 +49,20 @@ public class UserInterface {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    private final SessionFactory sessionFactory;
-
     public UserInterface(BankService bankService,
                          BranchService branchService,
                          AccountService accountService,
                          LoanService loanService,
                          FinancialProfileService financialProfileService,
                          CustomerService customerService,
-                         SessionFactory sessionFactory) {
+                         Session session) {
         this.bankService = bankService;
         this.branchService = branchService;
         this.accountService = accountService;
         this.loanService = loanService;
         this.financialProfileService = financialProfileService;
         this.customerService = customerService;
-        this.sessionFactory = sessionFactory;
+        this.session = session;
     }
 
     public void displayUserInterface() {
@@ -73,7 +70,6 @@ public class UserInterface {
 
         while (continueLoop) {
             try {
-                session = sessionFactory.openSession();
                 session.beginTransaction();
 
                 System.out.println("\nPlease choose an option: ");
@@ -117,13 +113,8 @@ public class UserInterface {
                 session.getTransaction().rollback();
                 System.out.println(e.getMessage());
                 e.printStackTrace();
-            } finally {
-                if (session.isConnected()) {
-                    session.close();
-                }
             }
         }
-        sessionFactory.close();
     }
 
     private void createAccount() {
@@ -173,10 +164,6 @@ public class UserInterface {
                 loanService.getCustomersWithLoansIds());
         String loanId = scanner.nextLine();
 
-        if (!financialProfileService.existsFinancialProfileById(loanId)) {
-            throw new IllegalArgumentException("Loan with id = %s does not exist!".formatted(loanId));
-        }
-
         loanService.remove(loanId);
     }
 
@@ -186,19 +173,11 @@ public class UserInterface {
                 accountService.getCustomersWithAccountIds());
         String accountId = scanner.nextLine();
 
-        if (!financialProfileService.existsFinancialProfileById(accountId)) {
-            throw new IllegalArgumentException("Account with id = %s does not exist!".formatted(accountId));
-        }
-
         accountService.remove(accountId);
     }
 
     private void updateLoanAmount() {
         List<CustomerFinancialProfile> customersWithLoansIds = loanService.getCustomersWithLoansIds();
-
-        if (customersWithLoansIds.isEmpty()) {
-            throw new IllegalStateException("No loans in the system!");
-        }
 
         printIdsWithCustomers(
                 "Select Loan to be updated:",
@@ -210,10 +189,6 @@ public class UserInterface {
     private void updateAccountAmount() {
         List<CustomerFinancialProfile> customersWithAccountIds = accountService.getCustomersWithAccountIds();
 
-        if (customersWithAccountIds.isEmpty()) {
-            throw new IllegalStateException("No accounts in the system!");
-        }
-
         printIdsWithCustomers(
                 "Select Account to be updated:",
                 customersWithAccountIds);
@@ -223,10 +198,6 @@ public class UserInterface {
 
     private void updateAmount() {
         String id = scanner.nextLine();
-
-        if (!financialProfileService.existsFinancialProfileById(id)) {
-            throw new IllegalArgumentException("No financial profile with id = %s!".formatted(id));
-        }
 
         BigDecimal amount = financialProfileService.getLoanAmount(id);
         System.out.println("Initial amount = " + amount);
@@ -339,18 +310,13 @@ public class UserInterface {
     }
 
     private Customer selectExistingCustomer() {
-        System.out.println("Select the customer email: ");
         List<String> emails = customerService.getEmails();
-
-        if (emails.isEmpty()) {
-            throw new IllegalStateException("No customers in the system!");
-        }
+        System.out.println("Select the customer email: ");
 
         emails.forEach(System.out::println);
         String email = scanner.nextLine();
 
-        return customerService.getCustomerByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Incorrect email"));
+        return customerService.getCustomerByEmail(email);
     }
 
     private Branch getBranch() {
@@ -398,15 +364,10 @@ public class UserInterface {
         System.out.println("Select branch code: ");
         List<Map<Integer, String>> branches = branchService.getBranches();
 
-        if (branches.isEmpty()) {
-            throw new IllegalStateException("No branches in the system!");
-        }
-
         branches.forEach(System.out::println);
         String id = scanner.nextLine();
 
-        return branchService.getBranchById(Integer.parseInt(id))
-                .orElseThrow(() -> new IllegalArgumentException("Incorrect branch id!"));
+        return branchService.getBranchById(Integer.parseInt(id));
     }
 
     private Bank getBank() {
@@ -449,14 +410,9 @@ public class UserInterface {
         System.out.println("Select bank code: ");
         List<Map<String, String>> banks = bankService.getBankCodes();
 
-        if (banks.isEmpty()) {
-            throw new IllegalStateException("No banks in system");
-        }
-
         banks.forEach(System.out::println);
         String code = scanner.nextLine();
 
-        return bankService.getBankByCode(code)
-                .orElseThrow(() -> new IllegalArgumentException("Incorrect bank code!"));
+        return bankService.getBankByCode(code);
     }
 }

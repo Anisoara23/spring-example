@@ -5,7 +5,6 @@ import org.example.entity.Customer;
 import org.example.service.CustomerService;
 
 import java.util.List;
-import java.util.Optional;
 
 public class CustomerServiceImpl implements CustomerService {
 
@@ -27,11 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<String> getEmails() {
-        return customerDao.getEmails();
+        List<String> emails = customerDao.getEmails();
+
+        if (emails.isEmpty()) {
+            throw new IllegalStateException("No customers in the system!");
+        }
+
+        return emails;
     }
 
     @Override
-    public Optional<Customer> getCustomerByEmail(String email) {
-        return customerDao.getCustomerByEmail(email);
+    public Customer getCustomerByEmail(String email) {
+        return customerDao.getCustomerByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Incorrect email"));
     }
 }

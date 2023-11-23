@@ -6,7 +6,6 @@ import org.example.service.BranchService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class BranchServiceImpl implements BranchService {
 
@@ -18,11 +17,18 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public List<Map<Integer, String>> getBranches() {
-        return branchDao.getBranches();
+        List<Map<Integer, String>> branches = branchDao.getBranches();
+
+        if (branches.isEmpty()) {
+            throw new IllegalStateException("No branches in the system!");
+        }
+
+        return branches;
     }
 
     @Override
-    public Optional<Branch> getBranchById(int id) {
-        return branchDao.getBranchById(id);
+    public Branch getBranchById(int id) {
+        return branchDao.getBranchById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Incorrect branch id!"));
     }
 }
