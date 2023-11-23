@@ -47,7 +47,7 @@ public class UserInterface {
 
     private final CustomerService customerService;
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
     public UserInterface(BankService bankService,
                          BranchService branchService,
@@ -55,7 +55,8 @@ public class UserInterface {
                          LoanService loanService,
                          FinancialProfileService financialProfileService,
                          CustomerService customerService,
-                         Session session) {
+                         Session session,
+                         Scanner scanner) {
         this.bankService = bankService;
         this.branchService = branchService;
         this.accountService = accountService;
@@ -63,6 +64,7 @@ public class UserInterface {
         this.financialProfileService = financialProfileService;
         this.customerService = customerService;
         this.session = session;
+        this.scanner = scanner;
     }
 
     public void displayUserInterface() {
