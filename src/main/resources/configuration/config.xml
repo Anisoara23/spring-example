@@ -10,4 +10,5 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     <import resource="datasource-config.xml"/>
     <import resource="hibernate-config.xml"/>
     <import resource="dao-layer-config.xml"/>
+    <import resource="service-layer-config.xml"/>
 </beans>

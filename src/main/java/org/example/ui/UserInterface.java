@@ -1,17 +1,5 @@
 package org.example.ui;
 
-import org.example.dao.AccountDao;
-import org.example.dao.BankDao;
-import org.example.dao.BranchDao;
-import org.example.dao.CustomerDao;
-import org.example.dao.FinancialProfileDao;
-import org.example.dao.LoanDao;
-import org.example.dao.impl.AccountDaoImpl;
-import org.example.dao.impl.BankDaoImpl;
-import org.example.dao.impl.BranchDaoImpl;
-import org.example.dao.impl.CustomerDaoImpl;
-import org.example.dao.impl.FinancialProfileDaoImpl;
-import org.example.dao.impl.LoanDaoImpl;
 import org.example.entity.Account;
 import org.example.entity.AccountType;
 import org.example.entity.Address;
@@ -23,6 +11,12 @@ import org.example.entity.CustomerInfo;
 import org.example.entity.Loan;
 import org.example.entity.LoanType;
 import org.example.pojo.CustomerFinancialProfile;
+import org.example.service.AccountService;
+import org.example.service.BankService;
+import org.example.service.BranchService;
+import org.example.service.CustomerService;
+import org.example.service.FinancialProfileService;
+import org.example.service.LoanService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -42,23 +36,35 @@ public class UserInterface {
 
     private Session session;
 
-    private BankDao bankDao;
+    private final BankService bankService;
 
-    private BranchDao branchDao;
+    private final BranchService branchService;
 
-    private AccountDao accountDao;
+    private final AccountService accountService;
 
-    private LoanDao loanDao;
+    private final LoanService loanService;
 
-    private CustomerDao customerDao;
+    private final FinancialProfileService financialProfileService;
 
-    private FinancialProfileDao financialProfileDao;
+    private final CustomerService customerService;
 
     private final Scanner scanner = new Scanner(System.in);
 
     private final SessionFactory sessionFactory;
 
-    public UserInterface(SessionFactory sessionFactory) {
+    public UserInterface(BankService bankService,
+                         BranchService branchService,
+                         AccountService accountService,
+                         LoanService loanService,
+                         FinancialProfileService financialProfileService,
+                         CustomerService customerService,
+                         SessionFactory sessionFactory) {
+        this.bankService = bankService;
+        this.branchService = branchService;
+        this.accountService = accountService;
+        this.loanService = loanService;
+        this.financialProfileService = financialProfileService;
+        this.customerService = customerService;
         this.sessionFactory = sessionFactory;
     }
 
@@ -69,13 +75,6 @@ public class UserInterface {
             try {
                 session = sessionFactory.openSession();
                 session.beginTransaction();
-
-                accountDao = new AccountDaoImpl(session);
-                bankDao = new BankDaoImpl(session);
-                branchDao = new BranchDaoImpl(session);
-                customerDao = new CustomerDaoImpl(session);
-                loanDao = new LoanDaoImpl(session);
-                financialProfileDao = new FinancialProfileDaoImpl(session);
 
                 System.out.println("\nPlease choose an option: ");
                 System.out.println("1. Apply for a Loan;");
@@ -138,7 +137,7 @@ public class UserInterface {
         branch.getFinancialProfiles().add(account);
 
         Customer customer = getCustomer();
-        customerDao.addCustomer(customer);
+        customerService.add(customer);
 
         CustomerAccount customerAccount = new CustomerAccount(new Date());
         customerAccount.setAccount(account);
@@ -146,7 +145,7 @@ public class UserInterface {
 
         account.getCustomers().add(customerAccount);
         customer.getAccounts().add(customerAccount);
-        accountDao.addAccount(account);
+        accountService.add(account);
     }
 
     private void createLoan() {
@@ -160,42 +159,42 @@ public class UserInterface {
         branch.getFinancialProfiles().add(loan);
 
         Customer customer = getCustomer();
-        customerDao.addCustomer(customer);
+        customerService.add(customer);
 
         customer.getLoans().add(loan);
         loan.getCustomers().add(customer);
 
-        loanDao.addLoan(loan);
+        loanService.add(loan);
     }
 
     private void removeLoan() {
         printIdsWithCustomers(
                 "Select loan id to be deleted: ",
-                loanDao.getCustomersWithLoansIds());
+                loanService.getCustomersWithLoansIds());
         String loanId = scanner.nextLine();
 
-        if (!financialProfileDao.existsFinancialProfileById(loanId)) {
+        if (!financialProfileService.existsFinancialProfileById(loanId)) {
             throw new IllegalArgumentException("Loan with id = %s does not exist!".formatted(loanId));
         }
 
-        loanDao.removeLoanById(loanId);
+        loanService.remove(loanId);
     }
 
     private void removeAccount() {
         printIdsWithCustomers(
                 "Select account id to be deleted: ",
-                accountDao.getCustomersWithAccountIds());
+                accountService.getCustomersWithAccountIds());
         String accountId = scanner.nextLine();
 
-        if (!financialProfileDao.existsFinancialProfileById(accountId)) {
+        if (!financialProfileService.existsFinancialProfileById(accountId)) {
             throw new IllegalArgumentException("Account with id = %s does not exist!".formatted(accountId));
         }
 
-        accountDao.removeAccountById(accountId);
+        accountService.remove(accountId);
     }
 
     private void updateLoanAmount() {
-        List<CustomerFinancialProfile> customersWithLoansIds = loanDao.getCustomersWithLoansIds();
+        List<CustomerFinancialProfile> customersWithLoansIds = loanService.getCustomersWithLoansIds();
 
         if (customersWithLoansIds.isEmpty()) {
             throw new IllegalStateException("No loans in the system!");
@@ -209,7 +208,7 @@ public class UserInterface {
     }
 
     private void updateAccountAmount() {
-        List<CustomerFinancialProfile> customersWithAccountIds = accountDao.getCustomersWithAccountIds();
+        List<CustomerFinancialProfile> customersWithAccountIds = accountService.getCustomersWithAccountIds();
 
         if (customersWithAccountIds.isEmpty()) {
             throw new IllegalStateException("No accounts in the system!");
@@ -225,17 +224,17 @@ public class UserInterface {
     private void updateAmount() {
         String id = scanner.nextLine();
 
-        if (!financialProfileDao.existsFinancialProfileById(id)) {
+        if (!financialProfileService.existsFinancialProfileById(id)) {
             throw new IllegalArgumentException("No financial profile with id = %s!".formatted(id));
         }
 
-        BigDecimal amount = financialProfileDao.getLoanAmount(id);
+        BigDecimal amount = financialProfileService.getLoanAmount(id);
         System.out.println("Initial amount = " + amount);
 
         System.out.println("Introduce new amount: ");
         BigDecimal newAmount = new BigDecimal(scanner.nextLine());
 
-        financialProfileDao.updateAmount(id, newAmount);
+        financialProfileService.updateAmount(id, newAmount);
     }
 
     private void printIdsWithCustomers(
@@ -341,7 +340,7 @@ public class UserInterface {
 
     private Customer selectExistingCustomer() {
         System.out.println("Select the customer email: ");
-        List<String> emails = customerDao.getEmails();
+        List<String> emails = customerService.getEmails();
 
         if (emails.isEmpty()) {
             throw new IllegalStateException("No customers in the system!");
@@ -350,7 +349,7 @@ public class UserInterface {
         emails.forEach(System.out::println);
         String email = scanner.nextLine();
 
-        return customerDao.getCustomerByEmail(email)
+        return customerService.getCustomerByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect email"));
     }
 
@@ -397,7 +396,7 @@ public class UserInterface {
 
     private Branch selectExistingBranch() {
         System.out.println("Select branch code: ");
-        List<Map<Integer, String>> branches = branchDao.getBranches();
+        List<Map<Integer, String>> branches = branchService.getBranches();
 
         if (branches.isEmpty()) {
             throw new IllegalStateException("No branches in the system!");
@@ -406,7 +405,7 @@ public class UserInterface {
         branches.forEach(System.out::println);
         String id = scanner.nextLine();
 
-        return branchDao.getBranchById(Integer.parseInt(id))
+        return branchService.getBranchById(Integer.parseInt(id))
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect branch id!"));
     }
 
@@ -448,7 +447,7 @@ public class UserInterface {
 
     private Bank selectExistingBank() {
         System.out.println("Select bank code: ");
-        List<Map<String, String>> banks = bankDao.getBankCodes();
+        List<Map<String, String>> banks = bankService.getBankCodes();
 
         if (banks.isEmpty()) {
             throw new IllegalStateException("No banks in system");
@@ -457,7 +456,7 @@ public class UserInterface {
         banks.forEach(System.out::println);
         String code = scanner.nextLine();
 
-        return bankDao.getBankByCode(code)
+        return bankService.getBankByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("Incorrect bank code!"));
     }
 }

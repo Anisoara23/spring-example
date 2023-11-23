@@ -22,7 +22,4 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     <bean id="customerDaoImpl" class="org.example.dao.impl.CustomerDaoImpl">
         <constructor-arg ref="session"/>
     </bean>
-    <bean id="customerInfoDaoImpl" class="org.example.dao.impl.CustomerInfoDaoImpl">
-        <constructor-arg ref="session"/>
-    </bean>
 </beans>

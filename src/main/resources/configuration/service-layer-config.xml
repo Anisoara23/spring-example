@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="loanServiceImpl" class="org.example.service.impl.LoanServiceImpl">
+        <constructor-arg ref="loanDaoImpl"/>
+    </bean>
+    <bean id="accountServiceImpl" class="org.example.service.impl.AccountServiceImpl">
+        <constructor-arg ref="accountDaoImpl"/>
+    </bean>
+    <bean id="bankServiceImpl" class="org.example.service.impl.BankServiceImpl">
+        <constructor-arg ref="bankDaoImpl"/>
+    </bean>
+    <bean id="branchServiceImpl" class="org.example.service.impl.BranchServiceImpl">
+        <constructor-arg ref="branchDaoImpl"/>
+    </bean>
+    <bean id="financialProfileServiceImpl" class="org.example.service.impl.FinancialProfileServiceImpl">
+        <constructor-arg ref="financialProfileDaoImpl"/>
+    </bean>
+    <bean id="customerServiceImpl" class="org.example.service.impl.CustomerServiceImpl">
+        <constructor-arg ref="customerDaoImpl"/>
+    </bean>
+</beans>
