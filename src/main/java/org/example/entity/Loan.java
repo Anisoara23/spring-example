@@ -1,5 +1,8 @@
 package org.example.entity;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,6 +20,7 @@ public class Loan extends FinancialProfile {
     private LoanType type;
 
     @ManyToMany(mappedBy = "loans", fetch = FetchType.LAZY)
+    @Cascade(value = CascadeType.SAVE_UPDATE)
     private Set<Customer> customers = new HashSet<>();
 
     public Loan() {

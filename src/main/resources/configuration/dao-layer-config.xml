@@ -5,21 +5,21 @@
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="bankDaoImpl" class="org.example.dao.impl.BankDaoImpl">
-        <constructor-arg ref="session"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
     <bean id="branchDaoImpl" class="org.example.dao.impl.BranchDaoImpl">
-        <constructor-arg ref="session"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
     <bean id="financialProfileDaoImpl" class="org.example.dao.impl.FinancialProfileDaoImpl">
-        <constructor-arg ref="session"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
     <bean id="loanDaoImpl" class="org.example.dao.impl.LoanDaoImpl">
-        <constructor-arg ref="session"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
     <bean id="accountDaoImpl" class="org.example.dao.impl.AccountDaoImpl">
-        <constructor-arg ref="session"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
     <bean id="customerDaoImpl" class="org.example.dao.impl.CustomerDaoImpl">
-        <constructor-arg ref="session"/>
+        <constructor-arg ref="sessionFactory"/>
     </bean>
 </beans>

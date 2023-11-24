@@ -32,7 +32,7 @@ import java.util.Set;
 })
 @Check(constraints = "length(IDNP) = 13")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "customer")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "customer")
 public class Customer {
 
     @Id
@@ -71,10 +71,10 @@ public class Customer {
     @Cascade(value = CascadeType.ALL)
     private CustomerInfo info;
 
-    @OneToMany(mappedBy = "id.customer")
+    @OneToMany(mappedBy = "id.customer", fetch = FetchType.EAGER)
     private Set<CustomerAccount> accounts = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_loan",
             joinColumns = @JoinColumn(name = "customer_id"),
@@ -117,5 +117,9 @@ public class Customer {
 
     public void setInfo(CustomerInfo info) {
         this.info = info;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

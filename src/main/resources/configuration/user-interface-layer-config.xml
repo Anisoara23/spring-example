@@ -14,7 +14,6 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
         <constructor-arg ref="loanServiceImpl"/>
         <constructor-arg ref="financialProfileServiceImpl"/>
         <constructor-arg ref="customerServiceImpl"/>
-        <constructor-arg ref="session"/>
         <constructor-arg>
             <bean id="scanner" class="java.util.Scanner" destroy-method="close">
                 <constructor-arg>

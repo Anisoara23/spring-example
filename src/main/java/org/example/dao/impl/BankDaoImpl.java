@@ -3,7 +3,7 @@ package org.example.dao.impl;
 import org.example.dao.BankDao;
 import org.example.entity.Bank;
 import org.hibernate.Query;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +12,24 @@ import java.util.Optional;
 
 public class BankDaoImpl implements BankDao {
 
-    private final Session session;
+    private final SessionFactory sessionFactory;
 
-    public BankDaoImpl(Session session) {
-        this.session = session;
+    public BankDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void addBank(Bank bank) {
-        session.save(bank);
+        sessionFactory
+                .getCurrentSession()
+                .save(bank);
     }
 
     @Override
     public Optional<Bank> getBankByCode(String code) {
-        Query query = session.createQuery("SELECT b FROM Bank b WHERE b.code = :code");
+        Query query = sessionFactory
+                .getCurrentSession()
+                .createQuery("SELECT b FROM Bank b WHERE b.code = :code");
         query.setParameter("code", code);
         query.setCacheable(true);
         query.setCacheRegion("bank");
@@ -43,7 +47,9 @@ public class BankDaoImpl implements BankDao {
     public List<Map<String, String>> getBankCodes() {
         List<Map<String, String>> mapList = new ArrayList<>();
 
-        Query query = session.createQuery("SELECT b FROM Bank b");
+        Query query = sessionFactory
+                .getCurrentSession()
+                .createQuery("SELECT b FROM Bank b");
         query.setCacheable(true);
         query.setCacheRegion("bank");
         List<Bank> banks = query.list();

@@ -17,7 +17,6 @@ import org.example.service.BranchService;
 import org.example.service.CustomerService;
 import org.example.service.FinancialProfileService;
 import org.example.service.LoanService;
-import org.hibernate.Session;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -32,8 +31,6 @@ import static org.example.entity.Gender.MALE;
 import static org.example.ui.TypeManager.getType;
 
 public class UserInterface {
-
-    private Session session;
 
     private final BankService bankService;
 
@@ -55,7 +52,6 @@ public class UserInterface {
                          LoanService loanService,
                          FinancialProfileService financialProfileService,
                          CustomerService customerService,
-                         Session session,
                          Scanner scanner) {
         this.bankService = bankService;
         this.branchService = branchService;
@@ -63,7 +59,6 @@ public class UserInterface {
         this.loanService = loanService;
         this.financialProfileService = financialProfileService;
         this.customerService = customerService;
-        this.session = session;
         this.scanner = scanner;
     }
 
@@ -72,8 +67,6 @@ public class UserInterface {
 
         while (continueLoop) {
             try {
-                session.beginTransaction();
-
                 System.out.println("\nPlease choose an option: ");
                 System.out.println("1. Apply for a Loan;");
                 System.out.println("2. Apply for an Account;");
@@ -110,9 +103,7 @@ public class UserInterface {
                     default:
                         System.out.println("No such option!");
                 }
-                session.getTransaction().commit();
             } catch (RuntimeException e) {
-                session.getTransaction().rollback();
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }

@@ -16,7 +16,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void add(Customer customer) {
-        if (customerDao.getCustomerByEmail(customer.getEmail()).isPresent()){
+        if (customerDao.getCustomerByEmail(customer.getEmail()).isPresent()) {
             return;
         }
         customerDao.addCustomer(customer);

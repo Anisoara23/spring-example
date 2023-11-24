@@ -3,27 +3,31 @@ package org.example.dao.impl;
 import org.example.dao.CustomerDao;
 import org.example.entity.Customer;
 import org.hibernate.Query;
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class CustomerDaoImpl implements CustomerDao {
 
-    private final Session session;
+    private final SessionFactory sessionFactory;
 
-    public CustomerDaoImpl(Session session) {
-        this.session = session;
+    public CustomerDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void addCustomer(Customer customer) {
-        session.save(customer);
+        sessionFactory
+                .getCurrentSession()
+                .save(customer);
     }
 
     @Override
     public Optional<Customer> getCustomerByEmail(String email) {
-        Query query = session.createQuery("SELECT c FROM Customer c WHERE c.email = :email");
+        Query query = sessionFactory
+                .getCurrentSession()
+                .createQuery("SELECT c FROM Customer c WHERE c.email = :email");
         query.setParameter("email", email);
         query.setCacheable(true);
         query.setCacheRegion("customer");
@@ -39,7 +43,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public List<String> getEmails() {
-        Query query = session.createQuery("SELECT c.email FROM Customer c");
+        Query query = sessionFactory
+                .getCurrentSession()
+                .createQuery("SELECT c.email FROM Customer c");
         query.setCacheable(true);
         query.setCacheRegion("customer");
 
