@@ -21,5 +21,6 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
                 </constructor-arg>
             </bean>
         </constructor-arg>
+        <property name="userInterface" ref="userInterface"/>
     </bean>
 </beans>

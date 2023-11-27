@@ -46,6 +46,8 @@ public class UserInterface {
 
     private final Scanner scanner;
 
+    private UserInterface userInterface;
+
     public UserInterface(BankService bankService,
                          BranchService branchService,
                          AccountService accountService,
@@ -80,22 +82,22 @@ public class UserInterface {
 
                 switch (option) {
                     case "1":
-                        createLoan();
+                        userInterface.createLoan();
                         break;
                     case "2":
-                        createAccount();
+                        userInterface.createAccount();
                         break;
                     case "3":
-                        removeLoan();
+                        userInterface.removeLoan();
                         break;
                     case "4":
-                        removeAccount();
+                        userInterface.removeAccount();
                         break;
                     case "5":
-                        updateLoanAmount();
+                        userInterface.updateLoanAmount();
                         break;
                     case "6":
-                        updateAccountAmount();
+                        userInterface.updateAccountAmount();
                         break;
                     case "7":
                         continueLoop = false;
@@ -110,7 +112,8 @@ public class UserInterface {
         }
     }
 
-    private void createAccount() {
+    @Transactional
+    public void createAccount() {
         Account account = new Account(getType(AccountType.class));
 
         BigDecimal amount = getAmount();
@@ -132,7 +135,8 @@ public class UserInterface {
         accountService.add(account);
     }
 
-    private void createLoan() {
+    @Transactional
+    public void createLoan() {
         Loan loan = new Loan(getType(LoanType.class));
 
         BigDecimal amount = getAmount();
@@ -151,7 +155,8 @@ public class UserInterface {
         loanService.add(loan);
     }
 
-    private void removeLoan() {
+    @Transactional
+    public void removeLoan() {
         printIdsWithCustomers(
                 "Select loan id to be deleted: ",
                 loanService.getCustomersWithLoansIds());
@@ -160,7 +165,8 @@ public class UserInterface {
         loanService.remove(loanId);
     }
 
-    private void removeAccount() {
+    @Transactional
+    public void removeAccount() {
         printIdsWithCustomers(
                 "Select account id to be deleted: ",
                 accountService.getCustomersWithAccountIds());
@@ -169,7 +175,8 @@ public class UserInterface {
         accountService.remove(accountId);
     }
 
-    private void updateLoanAmount() {
+    @Transactional
+    public void updateLoanAmount() {
         List<CustomerFinancialProfile> customersWithLoansIds = loanService.getCustomersWithLoansIds();
 
         printIdsWithCustomers(
@@ -179,7 +186,8 @@ public class UserInterface {
         updateAmount();
     }
 
-    private void updateAccountAmount() {
+    @Transactional
+    public void updateAccountAmount() {
         List<CustomerFinancialProfile> customersWithAccountIds = accountService.getCustomersWithAccountIds();
 
         printIdsWithCustomers(
@@ -407,5 +415,9 @@ public class UserInterface {
         String code = scanner.nextLine();
 
         return bankService.getBankByCode(code);
+    }
+
+    public void setUserInterface(UserInterface userInterface) {
+        this.userInterface = userInterface;
     }
 }
