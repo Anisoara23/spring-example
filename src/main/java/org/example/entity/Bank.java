@@ -36,7 +36,7 @@ public class Bank {
     })
     private Address address;
 
-    @OneToMany(mappedBy = "bank", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
     private Set<Branch> branches = new HashSet<>();
 
     public Bank() {

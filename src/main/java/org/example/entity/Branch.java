@@ -42,8 +42,8 @@ public class Branch {
     @Cascade(value = CascadeType.SAVE_UPDATE)
     private Bank bank;
 
-    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "financial_profile")
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "financial_profile")
     private Set<FinancialProfile> financialProfiles = new HashSet<>();
 
     public Branch() {

@@ -71,10 +71,10 @@ public class Customer {
     @Cascade(value = CascadeType.ALL)
     private CustomerInfo info;
 
-    @OneToMany(mappedBy = "id.customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "id.customer", fetch = FetchType.LAZY)
     private Set<CustomerAccount> accounts = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "customer_loan",
             joinColumns = @JoinColumn(name = "customer_id"),
