@@ -17,9 +17,10 @@ import org.example.service.BranchService;
 import org.example.service.CustomerService;
 import org.example.service.FinancialProfileService;
 import org.example.service.LoanService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,9 @@ public class UserInterface {
 
     private final Scanner scanner;
 
+    @Autowired
+    private UserInterface userInterface;
+
     public UserInterface(BankService bankService,
                          BranchService branchService,
                          AccountService accountService,
@@ -65,7 +69,6 @@ public class UserInterface {
         this.scanner = scanner;
     }
 
-    @Transactional
     public void displayUserInterface() {
         boolean continueLoop = true;
 
@@ -84,22 +87,22 @@ public class UserInterface {
 
                 switch (option) {
                     case "1":
-                        createLoan();
+                        userInterface.createLoan();
                         break;
                     case "2":
-                        createAccount();
+                        userInterface.createAccount();
                         break;
                     case "3":
-                        removeLoan();
+                        userInterface.removeLoan();
                         break;
                     case "4":
-                        removeAccount();
+                        userInterface.removeAccount();
                         break;
                     case "5":
-                        updateLoanAmount();
+                        userInterface.updateLoanAmount();
                         break;
                     case "6":
-                        updateAccountAmount();
+                        userInterface.updateAccountAmount();
                         break;
                     case "7":
                         continueLoop = false;
@@ -114,7 +117,8 @@ public class UserInterface {
         }
     }
 
-    private void createAccount() {
+    @Transactional
+    public void createAccount() {
         Account account = new Account(getType(AccountType.class));
 
         BigDecimal amount = getAmount();
@@ -136,7 +140,8 @@ public class UserInterface {
         accountService.add(account);
     }
 
-    private void createLoan() {
+    @Transactional
+    public void createLoan() {
         Loan loan = new Loan(getType(LoanType.class));
 
         BigDecimal amount = getAmount();
@@ -155,7 +160,8 @@ public class UserInterface {
         loanService.add(loan);
     }
 
-    private void removeLoan() {
+    @Transactional
+    public void removeLoan() {
         printIdsWithCustomers(
                 "Select loan id to be deleted: ",
                 loanService.getCustomersWithLoansIds());
@@ -164,7 +170,8 @@ public class UserInterface {
         loanService.remove(loanId);
     }
 
-    private void removeAccount() {
+    @Transactional
+    public void removeAccount() {
         printIdsWithCustomers(
                 "Select account id to be deleted: ",
                 accountService.getCustomersWithAccountIds());
@@ -173,7 +180,8 @@ public class UserInterface {
         accountService.remove(accountId);
     }
 
-    private void updateLoanAmount() {
+    @Transactional
+    public void updateLoanAmount() {
         List<CustomerFinancialProfile> customersWithLoansIds = loanService.getCustomersWithLoansIds();
 
         printIdsWithCustomers(
@@ -183,7 +191,8 @@ public class UserInterface {
         updateAmount();
     }
 
-    private void updateAccountAmount() {
+    @Transactional
+    public void updateAccountAmount() {
         List<CustomerFinancialProfile> customersWithAccountIds = accountService.getCustomersWithAccountIds();
 
         printIdsWithCustomers(
