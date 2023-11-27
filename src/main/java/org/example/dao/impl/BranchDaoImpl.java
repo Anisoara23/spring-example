@@ -4,12 +4,14 @@ import org.example.dao.BranchDao;
 import org.example.entity.Branch;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class BranchDaoImpl implements BranchDao {
 
     private final SessionFactory sessionFactory;

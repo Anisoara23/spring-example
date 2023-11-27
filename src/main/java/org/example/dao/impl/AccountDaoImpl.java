@@ -5,9 +5,11 @@ import org.example.entity.Account;
 import org.example.pojo.CustomerFinancialProfile;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class AccountDaoImpl implements AccountDao {
 
     private final SessionFactory sessionFactory;

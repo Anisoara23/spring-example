@@ -5,9 +5,13 @@ import org.example.entity.Loan;
 import org.example.pojo.CustomerFinancialProfile;
 import org.example.service.FinancialProfileService;
 import org.example.service.LoanService;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
+@Transactional
 public class LoanServiceImpl implements LoanService {
 
     private final LoanDao loanDao;

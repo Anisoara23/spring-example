@@ -3,10 +3,14 @@ package org.example.service.impl;
 import org.example.dao.BranchDao;
 import org.example.entity.Branch;
 import org.example.service.BranchService;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
+@Service
+@Transactional
 public class BranchServiceImpl implements BranchService {
 
     private final BranchDao branchDao;

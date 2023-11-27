@@ -4,12 +4,14 @@ import org.example.dao.BankDao;
 import org.example.entity.Bank;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class BankDaoImpl implements BankDao {
 
     private final SessionFactory sessionFactory;

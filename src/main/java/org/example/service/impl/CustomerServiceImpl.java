@@ -3,9 +3,13 @@ package org.example.service.impl;
 import org.example.dao.CustomerDao;
 import org.example.entity.Customer;
 import org.example.service.CustomerService;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;

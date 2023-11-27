@@ -3,9 +3,11 @@ package org.example.dao.impl;
 import org.example.dao.FinancialProfileDao;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 
+@Repository
 public class FinancialProfileDaoImpl implements FinancialProfileDao {
 
     private final SessionFactory sessionFactory;

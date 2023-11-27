@@ -2,9 +2,13 @@ package org.example.service.impl;
 
 import org.example.dao.FinancialProfileDao;
 import org.example.service.FinancialProfileService;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
+@Service
+@Transactional
 public class FinancialProfileServiceImpl implements FinancialProfileService {
 
     private final FinancialProfileDao financialProfileDao;

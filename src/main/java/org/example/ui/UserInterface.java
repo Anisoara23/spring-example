@@ -17,6 +17,7 @@ import org.example.service.BranchService;
 import org.example.service.CustomerService;
 import org.example.service.FinancialProfileService;
 import org.example.service.LoanService;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -30,6 +31,7 @@ import static org.example.entity.Gender.FEMALE;
 import static org.example.entity.Gender.MALE;
 import static org.example.ui.TypeManager.getType;
 
+@Component
 public class UserInterface {
 
     private final BankService bankService;

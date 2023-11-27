@@ -5,9 +5,11 @@ import org.example.entity.Loan;
 import org.example.pojo.CustomerFinancialProfile;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class LoanDaoImpl implements LoanDao {
 
     private final SessionFactory sessionFactory;
