@@ -22,7 +22,7 @@ import java.util.Set;
 
 @Entity
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "branch")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "branch")
 public class Branch {
 
     @Id
@@ -42,7 +42,7 @@ public class Branch {
     @Cascade(value = CascadeType.SAVE_UPDATE)
     private Bank bank;
 
-    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "financial_profile")
     private Set<FinancialProfile> financialProfiles = new HashSet<>();
 

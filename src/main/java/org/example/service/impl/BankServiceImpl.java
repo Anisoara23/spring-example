@@ -5,12 +5,10 @@ import org.example.entity.Bank;
 import org.example.service.BankService;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
 @Service
-@Transactional
 public class BankServiceImpl implements BankService {
 
     private final BankDao bankDao;

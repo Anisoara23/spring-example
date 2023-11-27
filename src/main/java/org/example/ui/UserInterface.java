@@ -19,6 +19,7 @@ import org.example.service.FinancialProfileService;
 import org.example.service.LoanService;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class UserInterface {
         this.scanner = scanner;
     }
 
+    @Transactional
     public void displayUserInterface() {
         boolean continueLoop = true;
 

@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Entity
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "bank")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "bank")
 public class Bank {
 
     @Id
@@ -36,7 +36,7 @@ public class Bank {
     })
     private Address address;
 
-    @OneToMany(mappedBy = "bank", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
     private Set<Branch> branches = new HashSet<>();
 
     public Bank() {

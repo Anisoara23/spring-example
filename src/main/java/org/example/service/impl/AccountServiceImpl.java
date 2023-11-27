@@ -7,11 +7,9 @@ import org.example.service.AccountService;
 import org.example.service.FinancialProfileService;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class AccountServiceImpl implements AccountService {
 
     private final AccountDao accountDao;
