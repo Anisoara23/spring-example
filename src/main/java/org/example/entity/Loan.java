@@ -43,4 +43,14 @@ public class Loan extends FinancialProfile {
             customer.getLoans().remove(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "id=" + getId() +
+                ", amount=" + getAmount() +
+                ", type=" + type +
+                ", customers=" + customers +
+                '}';
+    }
 }

@@ -53,6 +53,10 @@ public class FinancialProfile {
         this.amount = amount;
     }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

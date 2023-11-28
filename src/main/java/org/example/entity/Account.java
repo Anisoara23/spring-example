@@ -45,4 +45,13 @@ public class Account extends FinancialProfile {
     public void setType(AccountType type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "amount=" + getAmount() +
+                ", type=" + type +
+                ", customers=" + customers +
+                '}';
+    }
 }

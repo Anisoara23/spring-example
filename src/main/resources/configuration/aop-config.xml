@@ -20,13 +20,22 @@
     </tx:advice>
 
     <aop:config>
-        <aop:pointcut id="serviceOperation" expression="@annotation(org.example.ui.Transactional)"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation"/>
-<!--        <aop:aspect id="loggerAspect" ref="logger">-->
-<!--            <aop:pointcut id="createOperation" expression="execution(* org.example.dao.*Dao.add*(..))"/>-->
-<!--            <aop:around method="logCreate" pointcut-ref="createOperation"/>-->
-<!--        </aop:aspect>-->
+        <aop:pointcut id="transactionalOperation" expression="@annotation(org.example.ui.Transactional)"/>
+        <aop:pointcut id="saveOperation" expression="execution(* org.example.service.*Service.add(..)) and args(org.example.entity.FinancialProfile)"/>
+        <aop:pointcut id="removeOperation" expression="execution(* org.example.service.*Service.remove*(..))"/>
+        <aop:pointcut id="updateOperation" expression="execution(* org.example.service.FinancialProfileService.updateAmount(..))"/>
     </aop:config>
 
-    <bean id="logger" class="org.example.aop.LoggingAop"/>
+    <aop:config>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionalOperation"/>
+        <aop:aspect id="operationConfirmationAspect" ref="entityOperationConfirmationAspect">
+            <aop:around method="confirmEntityAdd" pointcut-ref="saveOperation"/>
+            <aop:around method="confirmEntityRemoval" pointcut-ref="removeOperation"/>
+            <aop:around method="confirmEntityUpdate" pointcut-ref="updateOperation"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="entityOperationConfirmationAspect" class="org.example.aop.EntityOperationConfirmationAspect">
+        <constructor-arg ref="scanner"/>
+    </bean>
 </beans>
