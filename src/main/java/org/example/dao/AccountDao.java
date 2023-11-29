@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AccountDao {
 
-    void addAccount(Account account);
+    String addAccount(Account account);
 
     List<CustomerFinancialProfile> getCustomersWithAccountIds();
 

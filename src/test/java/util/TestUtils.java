@@ -1,5 +1,7 @@
 package util;
 
+import org.example.entity.Account;
+import org.example.entity.AccountType;
 import org.example.entity.Address;
 import org.example.entity.Bank;
 import org.example.entity.Branch;
@@ -37,7 +39,13 @@ public class TestUtils {
 
     public static final Loan LOAN = new Loan(LoanType.BUSINESS);
 
+    public static final Account ACCOUNT = new Account(AccountType.BUSINESS);
+
     public static final String SELECT_LOAN_BY_ID = "SELECT l FROM Loan l WHERE l.id = :id";
 
     public static final String SELECT_LOANS = "SELECT l FROM Loan l";
+
+    public static final String SELECT_ACCOUNTS = "SELECT a FROM Account a";
+
+    public static final String SELECT_ACCOUNT_BY_ID = "SELECT a FROM Account a WHERE id = :id";
 }

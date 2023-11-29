@@ -16,8 +16,10 @@ public class AccountDaoImpl implements AccountDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public void addAccount(Account account) {
-        sessionFactory.getCurrentSession().save(account);
+    public String addAccount(Account account) {
+        return (String) sessionFactory
+                .getCurrentSession()
+                .save(account);
     }
 
     @Override
