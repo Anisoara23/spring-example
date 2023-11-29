@@ -15,4 +15,8 @@ public class TestUtils {
     public static final String SELECT_BANKS = "SELECT b FROM Bank b";
 
     public static final String SELECT_BANK_BY_NAME = "SELECT b FROM Bank b WHERE b.name=:name";
+
+    public static final String SELECT_BRANCHES = "SELECT b FROM Branch b";
+
+    public static final String SELECT_BRANCH_BY_NAME = "SELECT b FROM Branch b WHERE b.name = :name";
 }
