@@ -52,7 +52,7 @@ public class HibernateConfig {
         properties.put("hibernate.cache.use_second_level_cache", environment.getProperty("hibernate.cache.use_second_level_cache"));
         properties.put("hibernate.cache.use_query_cache", environment.getProperty("hibernate.cache.use_query_cache"));
         properties.put("net.sf.ehcache.configurationResourceName", environment.getProperty("net.sf.ehcache.configurationResourceName"));
-        properties.put("hbm2ddl.auto", environment.getProperty("hbm2ddl.auto"));
+        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
         return properties;
     }
 }
