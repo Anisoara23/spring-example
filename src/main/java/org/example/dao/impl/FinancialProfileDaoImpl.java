@@ -15,7 +15,7 @@ public class FinancialProfileDaoImpl implements FinancialProfileDao {
     }
 
     @Override
-    public BigDecimal getLoanAmount(String id) {
+    public BigDecimal getAmount(String id) {
         Query query = sessionFactory
                 .getCurrentSession()
                 .createQuery("SELECT fp.amount FROM FinancialProfile fp WHERE id = :id");

@@ -24,7 +24,7 @@ public class FinancialProfileServiceImpl implements FinancialProfileService {
 
     @Override
     public BigDecimal getLoanAmount(String id) {
-        return financialProfileDao.getLoanAmount(id);
+        return financialProfileDao.getAmount(id);
     }
 
     @Override

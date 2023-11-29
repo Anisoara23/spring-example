@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public interface FinancialProfileDao {
 
-    BigDecimal getLoanAmount(String id);
+    BigDecimal getAmount(String id);
 
     int updateAmount(String id, BigDecimal newAmount);
 

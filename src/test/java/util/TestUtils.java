@@ -9,6 +9,7 @@ import org.example.entity.Customer;
 import org.example.entity.Loan;
 import org.example.entity.LoanType;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class TestUtils {
@@ -48,4 +49,8 @@ public class TestUtils {
     public static final String SELECT_ACCOUNTS = "SELECT a FROM Account a";
 
     public static final String SELECT_ACCOUNT_BY_ID = "SELECT a FROM Account a WHERE id = :id";
+
+    public static final BigDecimal INITIAL_AMOUNT = new BigDecimal("100.00");
+
+    public static final BigDecimal NEW_AMOUNT = new BigDecimal("200.00");
 }
