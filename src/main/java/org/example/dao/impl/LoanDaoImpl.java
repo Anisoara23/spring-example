@@ -6,7 +6,9 @@ import org.example.pojo.CustomerFinancialProfile;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public class LoanDaoImpl implements LoanDao {
 
@@ -17,8 +19,8 @@ public class LoanDaoImpl implements LoanDao {
     }
 
     @Override
-    public void addLoan(Loan loan) {
-        sessionFactory
+    public String addLoan(Loan loan) {
+        return (String) sessionFactory
                 .getCurrentSession()
                 .save(loan);
     }

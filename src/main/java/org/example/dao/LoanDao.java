@@ -4,10 +4,11 @@ import org.example.entity.Loan;
 import org.example.pojo.CustomerFinancialProfile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LoanDao {
 
-    void addLoan(Loan loan);
+    String addLoan(Loan loan);
 
     List<CustomerFinancialProfile> getCustomersWithLoansIds();
 
