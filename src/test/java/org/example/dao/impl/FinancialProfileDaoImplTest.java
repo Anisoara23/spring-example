@@ -1,7 +1,6 @@
 package org.example.dao.impl;
 
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +18,7 @@ import static util.TestUtils.BRANCH;
 import static util.TestUtils.INITIAL_AMOUNT;
 import static util.TestUtils.LOAN;
 import static util.TestUtils.NEW_AMOUNT;
+import static util.TestUtils.setNullIds;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
@@ -42,14 +42,10 @@ public class FinancialProfileDaoImplTest {
     @Transactional
     @Rollback
     public void setUp() throws Exception {
+        setNullIds();
         LOAN.setAmount(INITIAL_AMOUNT);
         LOAN.setBranch(BRANCH);
         loanDao.addLoan(LOAN);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        BRANCH.setId(null);
     }
 
     @Test

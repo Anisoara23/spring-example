@@ -53,4 +53,10 @@ public class TestUtils {
     public static final BigDecimal INITIAL_AMOUNT = new BigDecimal("100.00");
 
     public static final BigDecimal NEW_AMOUNT = new BigDecimal("200.00");
+
+
+    public static void setNullIds() {
+        BANK.setCode(null);
+        BRANCH.setId(null);
+    }
 }

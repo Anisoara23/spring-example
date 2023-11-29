@@ -3,7 +3,6 @@ package org.example.dao.impl;
 import org.example.entity.Branch;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +19,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static util.TestUtils.BANK;
 import static util.TestUtils.BRANCH;
 import static util.TestUtils.SELECT_BRANCHES;
 import static util.TestUtils.SELECT_BRANCH_BY_NAME;
+import static util.TestUtils.setNullIds;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
@@ -44,13 +43,8 @@ public class BranchDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
-        BRANCH.setBank(BANK);
+        setNullIds();
         verifyInitialDataFromBranchTable();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        BANK.setCode(null);
     }
 
     @Test

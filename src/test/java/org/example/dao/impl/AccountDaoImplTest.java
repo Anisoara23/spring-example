@@ -22,6 +22,7 @@ import static util.TestUtils.ACCOUNT;
 import static util.TestUtils.BRANCH;
 import static util.TestUtils.SELECT_ACCOUNTS;
 import static util.TestUtils.SELECT_ACCOUNT_BY_ID;
+import static util.TestUtils.setNullIds;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
@@ -40,8 +41,8 @@ public class AccountDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
+        setNullIds();
         ACCOUNT.setBranch(BRANCH);
-        BRANCH.setId(null);
 
         verifyInitialDataInAccountTable();
     }

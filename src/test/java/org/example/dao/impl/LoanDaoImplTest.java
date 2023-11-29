@@ -14,16 +14,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static util.TestUtils.BRANCH;
-import static util.TestUtils.CUSTOMER;
 import static util.TestUtils.LOAN;
 import static util.TestUtils.SELECT_LOANS;
 import static util.TestUtils.SELECT_LOAN_BY_ID;
+import static util.TestUtils.setNullIds;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
@@ -42,8 +41,8 @@ public class LoanDaoImplTest {
 
     @Before
     public void setUp() throws Exception {
+        setNullIds();
         LOAN.setBranch(BRANCH);
-        LOAN.setCustomers(Set.of(CUSTOMER));
 
         verifyInitialDataInLoanTable();
     }
