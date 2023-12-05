@@ -25,11 +25,13 @@ public class CustomerFieldSetMapper implements FieldSetMapper<Customer> {
         customerInfo.setOccupation(fieldSet.readString("occupation"));
 
         Customer customer = new Customer();
+        customer.setId(fieldSet.readInt("id"));
         customer.setFirstName(fieldSet.readString("first_name"));
         customer.setLastName(fieldSet.readString("last_name"));
         customer.setEmail(fieldSet.readString("email"));
         customer.setBirthDate(fieldSet.readDate("birth_date"));
         customer.setPhoneNumber(fieldSet.readString("phone_number"));
+        customer.setIdnp(fieldSet.readString("idnp"));
         customer.setInfo(customerInfo);
 
         return customer;

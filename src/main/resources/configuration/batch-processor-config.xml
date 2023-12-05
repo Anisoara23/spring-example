@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="compositeCustomerValidationProcessor" class="org.springframework.batch.item.support.CompositeItemProcessor">
+        <property name="delegates">
+            <util:list id="validators" value-type="org.springframework.batch.item.ItemProcessor">
+                <ref bean="customerAgeValidationProcessor"/>
+                <ref bean="customerIdnpValidationProcessor"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="customerAgeValidationProcessor" class="org.example.batch.processor.CustomerAgeValidationProcessor"/>
+    <bean id="customerIdnpValidationProcessor" class="org.example.batch.processor.CustomerIdnpValidationProcessor"/>
+
+    <bean id="customerInfoProcessor" class="org.example.batch.processor.CustomerInfoProcessor"/>
+</beans>

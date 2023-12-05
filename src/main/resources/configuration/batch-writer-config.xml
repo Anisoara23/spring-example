@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="dbBankWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
         <property name="sql" value="${bankInsertStatement}"/>
         <property name="dataSource" ref="dataSource"/>
-        <property name="itemPreparedStatementSetter" ref="bankItemPreparedStatementSetter"/>
+        <property name="itemPreparedStatementSetter" ref="bankPreparedStatementSetter"/>
     </bean>
 
-    <bean id="bankItemPreparedStatementSetter" class="org.example.batch.BankPreparedStatementSetter"/>
+    <bean id="bankPreparedStatementSetter" class="org.example.batch.BankPreparedStatementSetter"/>
+    
+    <bean id="compositeCustomerWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+        <property name="delegates">
+            <util:list id="writers" value-type="org.springframework.batch.item.ItemWriter">
+                <ref bean="dbCustomerWriter"/>
+                <ref bean="dbCustomerInfoWriter"/>
+            </util:list>
+        </property>
+    </bean>
 
     <bean id="dbCustomerWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
         <property name="sql" value="${customerInsertStatement}"/>
         <property name="dataSource" ref="dataSource"/>
-        <property name="itemPreparedStatementSetter" ref="customerItemPreparedStatementSetter"/>
+        <property name="itemPreparedStatementSetter" ref="customerPreparedStatementSetter"/>
     </bean>
 
-    <bean id="customerItemPreparedStatementSetter" class="org.example.batch.CustomerPreparedStatementSetter"/>
+    <bean id="customerPreparedStatementSetter" class="org.example.batch.CustomerPreparedStatementSetter"/>
+
+    <bean id="dbCustomerInfoWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+        <property name="sql" value="${customerInfoInsertStatement}"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="itemPreparedStatementSetter" ref="customerInfoPreparedStatementSetter"/>
+    </bean>
+
+    <bean id="customerInfoPreparedStatementSetter" class="org.example.batch.CustomerInfoPreparedStatementSetter"/>
 </beans>

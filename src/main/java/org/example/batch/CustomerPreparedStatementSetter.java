@@ -9,14 +9,14 @@ import java.sql.SQLException;
 
 public class CustomerPreparedStatementSetter implements ItemPreparedStatementSetter<Customer> {
 
-
     @Override
     public void setValues(Customer customer, PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, customer.getFirstName());
-        preparedStatement.setString(2, customer.getLastName());
-        preparedStatement.setDate(3, new Date(customer.getBirthDate().getTime()));
-        preparedStatement.setString(4, customer.getIdnp());
-        preparedStatement.setString(5, customer.getEmail());
-        preparedStatement.setString(6, customer.getPhoneNumber());
+        preparedStatement.setInt(1, customer.getId());
+        preparedStatement.setString(2, customer.getFirstName());
+        preparedStatement.setString(3, customer.getLastName());
+        preparedStatement.setDate(4, new Date(customer.getBirthDate().getTime()));
+        preparedStatement.setString(5, customer.getIdnp());
+        preparedStatement.setString(6, customer.getEmail());
+        preparedStatement.setString(7, customer.getPhoneNumber());
     }
 }
