@@ -4,16 +4,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <bean id="csvFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <bean id="csvFileBankReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
         <property name="resource" value="classpath:data/banks.csv"/>
-        <property name="lineMapper" ref="lineMapper"/>
+        <property name="lineMapper" ref="bankLineMapper"/>
     </bean>
-    <bean id="lineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-        <property name="lineTokenizer" ref="tokenizer"/>
+    <bean id="bankLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="lineTokenizer" ref="bankTokenizer"/>
         <property name="fieldSetMapper" ref="bankFieldSetMapper"/>
     </bean>
-    <bean id="tokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+    <bean id="bankTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
         <property name="names">
             <array value-type="java.lang.String">
                 <value>code</value>
@@ -26,4 +26,35 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
         </property>
     </bean>
     <bean id="bankFieldSetMapper" class="org.example.batch.BankFieldSetMapper"/>
+
+    <bean id="csvFileCustomerReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="linesToSkip" value="1"/>
+        <property name="resource" value="classpath:data/customers.csv"/>
+        <property name="lineMapper" ref="customerLineMapper"/>
+    </bean>
+    <bean id="customerLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="lineTokenizer" ref="customerTokenizer"/>
+        <property name="fieldSetMapper" ref="customerFieldSetMapper"/>
+    </bean>
+    <bean id="customerTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+        <property name="names">
+            <array value-type="java.lang.String">
+                <value>id</value>
+                <value>first_name</value>
+                <value>last_name</value>
+                <value>email</value>
+                <value>birth_date</value>
+                <value>idnp</value>
+                <value>phone_number</value>
+                <value>country</value>
+                <value>city</value>
+                <value>street</value>
+                <value>postal_code</value>
+                <value>citizenship</value>
+                <value>gender</value>
+                <value>occupation</value>
+            </array>
+        </property>
+    </bean>
+    <bean id="customerFieldSetMapper" class="org.example.batch.CustomerFieldSetMapper"/>
 </beans>

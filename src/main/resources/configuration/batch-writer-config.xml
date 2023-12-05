@@ -4,11 +4,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <bean id="dbItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+    <bean id="dbBankWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
         <property name="sql" value="${bankInsertStatement}"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="itemPreparedStatementSetter" ref="bankItemPreparedStatementSetter"/>
     </bean>
 
-    <bean id="bankItemPreparedStatementSetter" class="org.example.batch.BankItemPreparedStatementSetter"/>
+    <bean id="bankItemPreparedStatementSetter" class="org.example.batch.BankPreparedStatementSetter"/>
+
+    <bean id="dbCustomerWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+        <property name="sql" value="${customerInsertStatement}"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="itemPreparedStatementSetter" ref="customerItemPreparedStatementSetter"/>
+    </bean>
+
+    <bean id="customerItemPreparedStatementSetter" class="org.example.batch.CustomerPreparedStatementSetter"/>
 </beans>
