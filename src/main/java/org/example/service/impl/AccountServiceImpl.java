@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void remove(String id) {
         if (!financialProfileService.existsFinancialProfileById(id)) {
-            throw new IllegalArgumentException("Account with id = %s does not exist!".formatted(id));
+            throw new IllegalArgumentException("Account with id = %s does not exist!" .formatted(id));
         }
 
         accountDao.removeAccountById(id);

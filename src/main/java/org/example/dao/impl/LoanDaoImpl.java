@@ -6,9 +6,7 @@ import org.example.pojo.CustomerFinancialProfile;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 public class LoanDaoImpl implements LoanDao {
 

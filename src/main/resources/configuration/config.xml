@@ -11,4 +11,5 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     <import resource="service-layer-config.xml"/>
     <import resource="user-interface-layer-config.xml"/>
     <import resource="aop-config.xml"/>
+    <import resource="batch-config.xml"/>
 </beans>

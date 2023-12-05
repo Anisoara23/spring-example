@@ -27,7 +27,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void remove(String id) {
         if (!financialProfileService.existsFinancialProfileById(id)) {
-            throw new IllegalArgumentException("Loan with id = %s does not exist!".formatted(id));
+            throw new IllegalArgumentException("Loan with id = %s does not exist!" .formatted(id));
         }
 
         loanDao.removeLoanById(id);

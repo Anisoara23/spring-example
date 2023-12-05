@@ -16,7 +16,7 @@ public class FinancialProfileServiceImpl implements FinancialProfileService {
     @Override
     public boolean existsFinancialProfileById(String id) {
         if (!financialProfileDao.existsFinancialProfileById(id)) {
-            throw new IllegalArgumentException("No financial profile with id = %s!".formatted(id));
+            throw new IllegalArgumentException("No financial profile with id = %s!" .formatted(id));
         }
 
         return true;
