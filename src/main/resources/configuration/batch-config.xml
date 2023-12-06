@@ -50,9 +50,14 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
         <batch:step id="moveImportedCsvFileStep">
             <batch:tasklet>
                 <bean id="moveFileTasklet" class="org.example.batch.tasklet.MoveFileTasklet">
-                    <property name="resource">
-                        <bean id="resource" class="org.springframework.core.io.FileSystemResource">
-                            <constructor-arg value="src/main/resources/data/input/customers.csv"/>
+                    <property name="source">
+                        <bean id="source" class="org.springframework.core.io.FileSystemResource" scope="step">
+                            <constructor-arg value="#{jobParameters['source']}"/>
+                        </bean>
+                    </property>
+                    <property name="destination">
+                        <bean id="destination" class="org.springframework.core.io.FileSystemResource" scope="step">
+                            <constructor-arg value="#{jobParameters['destination']}"/>
                         </bean>
                     </property>
                 </bean>

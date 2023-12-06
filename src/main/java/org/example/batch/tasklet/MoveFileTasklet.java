@@ -5,7 +5,6 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
@@ -13,29 +12,40 @@ import java.io.File;
 
 public class MoveFileTasklet implements Tasklet, InitializingBean {
 
-    private Resource resource;
+    private Resource source;
+
+    private Resource destination;
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        File fileToMove = resource.getFile();
-        File newFile = new File("src/main/resources/data/imported/customers-imported.csv");
-        boolean moved = fileToMove.renameTo(newFile);
+        File fileToMove = source.getFile();
+        File movedFile = destination.getFile();
+        boolean moved = fileToMove.renameTo(movedFile);
         if (!moved) {
             throw new IllegalStateException("Could not move file " + fileToMove.getName());
         }
         return RepeatStatus.FINISHED;
     }
 
-    public Resource getResource() {
-        return resource;
+    public Resource getSource() {
+        return source;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setSource(Resource source) {
+        this.source = source;
+    }
+
+    public Resource getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Resource destination) {
+        this.destination = destination;
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(resource, "Resource property must be set!");
+        Assert.notNull(source, "Source property must be set!");
+        Assert.notNull(destination, "Destination property must be set!");
     }
 }

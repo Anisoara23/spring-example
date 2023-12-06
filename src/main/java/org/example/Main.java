@@ -2,10 +2,14 @@ package org.example;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,7 +24,10 @@ public class Main {
             JobExecution importBankFromCsvToDbJobExecution = jobLauncher.run(importBankFromCsvToDbJob, new JobParameters());
             System.out.println(importBankFromCsvToDbJobExecution.getStatus());
 
-            JobExecution importCustomerFromCsvToDbJobExecution = jobLauncher.run(importCustomerFromCsvToDbJob, new JobParameters());
+            JobParameters jobParameters = new JobParametersBuilder().addString("source", "src/main/resources/data/input/customers.csv")
+                    .addString("destination", "src/main/resources/data/imported/customers-imported.csv").toJobParameters();
+
+            JobExecution importCustomerFromCsvToDbJobExecution = jobLauncher.run(importCustomerFromCsvToDbJob, jobParameters);
             System.out.println(importCustomerFromCsvToDbJobExecution.getStatus());
 
             JobExecution importCustomerFromDbToCsvJobExecution = jobLauncher.run(importCustomerFromDbToCsvJob, new JobParameters());
