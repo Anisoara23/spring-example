@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 
@@ -13,17 +14,23 @@ public class FileMoveStepListener implements StepExecutionListener {
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        logger.info("********** FILE IS ABOUT TO BE MOVED **********");
+        JobParameter source = stepExecution.getJobExecution().getJobParameters().getParameters().get("source");
+        JobParameter destination = stepExecution.getJobExecution().getJobParameters().getParameters().get("destination");
+
+        logger.info("********** FILE IS ABOUT TO BE MOVED FROM {} TO {} **********", source, destination);
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
+        JobParameter source = stepExecution.getJobExecution().getJobParameters().getParameters().get("source");
+        JobParameter destination = stepExecution.getJobExecution().getJobParameters().getParameters().get("destination");
+
         if (stepExecution.getStatus().equals(BatchStatus.FAILED)) {
-            logger.error("********** FILE COULD NOT BE MOVED **********");
+            logger.error("********** FILE COULD NOT BE MOVED FROM {} TO {} **********", source, destination);
             return ExitStatus.FAILED;
         }
 
-        logger.info("********** FILE IS MOVED SUCCESSFULLY **********");
+        logger.info("********** FILE WAS MOVED SUCCESSFULLY FROM {} TO {} **********", source, destination);
         return ExitStatus.COMPLETED;
     }
 }
