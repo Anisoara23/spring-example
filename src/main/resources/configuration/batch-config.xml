@@ -30,15 +30,16 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
     </bean>
 
     <batch:job id="importBankFromCsvToDbJob">
-        <batch:step id="importBankCsvToDbStep">
+        <batch:step id="importBankCsvToDbStep" next="moveImportedBanksCsvFileStep">
             <batch:tasklet>
                 <batch:chunk reader="csvFileBankReader" writer="dbBankWriter" commit-interval="1000"/>
             </batch:tasklet>
         </batch:step>
+        <batch:step id="moveImportedBanksCsvFileStep" parent="moveImportedCsvFileStep"/>
     </batch:job>
 
     <batch:job id="importCustomerFromCsvToDbJob">
-        <batch:step id="importCustomerFromCsvToDbStep" next="moveImportedCsvFileStep">
+        <batch:step id="importCustomerFromCsvToDbStep" next="moveImportedCustomersCsvFileStep">
             <batch:tasklet>
                 <batch:chunk reader="csvFileCustomerReader"
                              processor="compositeCustomerValidationProcessor"
@@ -47,28 +48,30 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="moveImportedCsvFileStep">
-            <batch:tasklet>
-                <bean id="moveFileTasklet" class="org.example.batch.tasklet.MoveFileTasklet">
-                    <property name="source">
-                        <bean id="source" class="org.springframework.core.io.FileSystemResource" scope="step">
-                            <constructor-arg value="#{jobParameters['source']}"/>
-                        </bean>
-                    </property>
-                    <property name="destination">
-                        <bean id="destination" class="org.springframework.core.io.FileSystemResource" scope="step">
-                            <constructor-arg value="#{jobParameters['destination']}"/>
-                        </bean>
-                    </property>
-                </bean>
-            </batch:tasklet>
-            <batch:listeners>
-                <batch:listener>
-                    <bean id="fileMoveStepListener" class="org.example.batch.listener.FileMoveStepListener"/>
-                </batch:listener>
-            </batch:listeners>
-        </batch:step>
+        <batch:step id="moveImportedCustomersCsvFileStep" parent="moveImportedCsvFileStep"/>
     </batch:job>
+
+    <batch:step id="moveImportedCsvFileStep">
+        <batch:tasklet>
+            <bean id="moveFileTasklet" class="org.example.batch.tasklet.MoveFileTasklet">
+                <property name="source">
+                    <bean id="source" class="org.springframework.core.io.FileSystemResource" scope="step">
+                        <constructor-arg value="#{jobParameters['source']}"/>
+                    </bean>
+                </property>
+                <property name="destination">
+                    <bean id="destination" class="org.springframework.core.io.FileSystemResource" scope="step">
+                        <constructor-arg value="#{jobParameters['destination']}"/>
+                    </bean>
+                </property>
+            </bean>
+        </batch:tasklet>
+        <batch:listeners>
+            <batch:listener>
+                <bean id="fileMoveStepListener" class="org.example.batch.listener.FileMoveStepListener"/>
+            </batch:listener>
+        </batch:listeners>
+    </batch:step>
 
     <batch:job id="importCustomerFromDbToCsvJob">
         <batch:step id="importCustomerFromDbToCsvStep">
