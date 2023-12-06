@@ -18,7 +18,7 @@ public class CustomerAgeValidationProcessor implements ItemProcessor<Customer, C
         return customer;
     }
 
-    private static int getYears(Date date){
+    private static int getYears(Date date) {
         LocalDate currentDate = LocalDate.now();
         LocalDate customerDate = date.toInstant()
                 .atZone(ZoneId.systemDefault())

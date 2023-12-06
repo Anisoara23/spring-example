@@ -6,7 +6,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="csvFileBankReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
-        <property name="resource" value="classpath:data/banks.csv"/>
+        <property name="resource" value="classpath:data/input/banks.csv"/>
         <property name="lineMapper" ref="bankLineMapper"/>
     </bean>
     <bean id="bankLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -25,11 +25,11 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
             </array>
         </property>
     </bean>
-    <bean id="bankFieldSetMapper" class="org.example.batch.BankFieldSetMapper"/>
+    <bean id="bankFieldSetMapper" class="org.example.batch.setmapper.BankFieldSetMapper"/>
 
     <bean id="csvFileCustomerReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
-        <property name="resource" value="classpath:data/customers.csv"/>
+        <property name="resource" value="classpath:data/input/customers.csv"/>
         <property name="lineMapper" ref="customerLineMapper"/>
     </bean>
     <bean id="customerLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -56,5 +56,13 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
             </array>
         </property>
     </bean>
-    <bean id="customerFieldSetMapper" class="org.example.batch.CustomerFieldSetMapper"/>
+    <bean id="customerFieldSetMapper" class="org.example.batch.setmapper.CustomerFieldSetMapper"/>
+
+    <bean id="dbCustomerReader" class="org.springframework.batch.item.database.JdbcCursorItemReader">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="sql" value="${selectCustomerStatement}"/>
+        <property name="rowMapper">
+            <bean id="customerRowMapper" class="org.example.batch.rowmapper.CustomerRowMapper"/>
+        </property>
+    </bean>
 </beans>

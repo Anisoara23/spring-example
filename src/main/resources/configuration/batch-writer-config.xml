@@ -13,11 +13,11 @@ http://www.springframework.org/schema/util/spring-util.xsd">
         <property name="itemPreparedStatementSetter" ref="bankPreparedStatementSetter"/>
     </bean>
 
-    <bean id="bankPreparedStatementSetter" class="org.example.batch.BankPreparedStatementSetter"/>
+    <bean id="bankPreparedStatementSetter" class="org.example.batch.preparedstatement.BankPreparedStatementSetter"/>
     
-    <bean id="compositeCustomerWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
+    <bean id="compositeDbCustomerWriter" class="org.springframework.batch.item.support.CompositeItemWriter">
         <property name="delegates">
-            <util:list id="writers" value-type="org.springframework.batch.item.ItemWriter">
+            <util:list id="dbWriters" value-type="org.springframework.batch.item.ItemWriter">
                 <ref bean="dbCustomerWriter"/>
                 <ref bean="dbCustomerInfoWriter"/>
             </util:list>
@@ -30,7 +30,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
         <property name="itemPreparedStatementSetter" ref="customerPreparedStatementSetter"/>
     </bean>
 
-    <bean id="customerPreparedStatementSetter" class="org.example.batch.CustomerPreparedStatementSetter"/>
+    <bean id="customerPreparedStatementSetter" class="org.example.batch.preparedstatement.CustomerPreparedStatementSetter"/>
 
     <bean id="dbCustomerInfoWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
         <property name="sql" value="${customerInfoInsertStatement}"/>
@@ -38,5 +38,40 @@ http://www.springframework.org/schema/util/spring-util.xsd">
         <property name="itemPreparedStatementSetter" ref="customerInfoPreparedStatementSetter"/>
     </bean>
 
-    <bean id="customerInfoPreparedStatementSetter" class="org.example.batch.CustomerInfoPreparedStatementSetter"/>
+    <bean id="customerInfoPreparedStatementSetter" class="org.example.batch.preparedstatement.CustomerInfoPreparedStatementSetter"/>
+
+    <bean id="csvCustomerWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+        <property name="resource">
+            <bean id="resource" class="org.springframework.core.io.FileSystemResource">
+                <constructor-arg value="src/main/resources/data/output/customers.csv"/>
+            </bean>
+        </property>
+        <property name="lineAggregator">
+            <bean id="lineAggregator" class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="delimiter" value=","/>
+                <property name="fieldExtractor">
+                    <bean id="fieldExtractor" class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names">
+                            <array value-type="java.lang.String">
+                                <value>id</value>
+                                <value>firstName</value>
+                                <value>lastName</value>
+                                <value>email</value>
+                                <value>birthDate</value>
+                                <value>idnp</value>
+                                <value>phoneNumber</value>
+                                <value>info.address.country</value>
+                                <value>info.address.city</value>
+                                <value>info.address.street</value>
+                                <value>info.address.postalCode</value>
+                                <value>info.citizenship</value>
+                                <value>info.gender</value>
+                                <value>info.occupation</value>
+                            </array>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
 </beans>
