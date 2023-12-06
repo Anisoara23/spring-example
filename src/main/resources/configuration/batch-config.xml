@@ -57,8 +57,14 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
                     </property>
                 </bean>
             </batch:tasklet>
+            <batch:listeners>
+                <batch:listener>
+                    <bean id="fileMoveStepListener" class="org.example.batch.listener.FileMoveStepListener"/>
+                </batch:listener>
+            </batch:listeners>
         </batch:step>
     </batch:job>
+
     <batch:job id="importCustomerFromDbToCsvJob">
         <batch:step id="importCustomerFromDbToCsvStep">
             <batch:tasklet>
