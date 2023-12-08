@@ -30,13 +30,22 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
     </bean>
 
     <batch:job id="importBankFromCsvToDbJob">
-        <batch:step id="importBankCsvToDbStep" next="moveImportedBanksCsvFileStep">
-            <batch:tasklet>
-                <batch:chunk reader="csvFileBankReader" writer="dbBankWriter" commit-interval="1000"/>
+        <batch:step id="importBankCsvToDbStep">
+            <batch:tasklet task-executor="taskExecutor">
+                <batch:chunk
+                        reader="csvFileBankReader"
+                        writer="dbBankWriter"
+                        commit-interval="10000"
+                />
             </batch:tasklet>
         </batch:step>
         <batch:step id="moveImportedBanksCsvFileStep" parent="moveImportedCsvFileStep"/>
     </batch:job>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="3"/>
+        <property name="maxPoolSize" value="10"/>
+    </bean>
 
     <batch:job id="importCustomerFromCsvToDbJob">
         <batch:step id="importCustomerFromCsvToDbStep" next="moveImportedCustomersCsvFileStep">
