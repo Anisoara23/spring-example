@@ -3,6 +3,7 @@ package org.example.entity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -14,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +40,10 @@ public class Bank {
 
     @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY)
     private Set<Branch> branches = new HashSet<>();
+
+    @Column(name = "registered_at")
+    @DateTimeFormat
+    private LocalDate registeredAt;
 
     public Bank() {
     }
@@ -77,5 +83,14 @@ public class Bank {
 
     public Address getAddress() {
         return address;
+    }
+
+
+    public LocalDate getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(LocalDate registeredAt) {
+        this.registeredAt = registeredAt;
     }
 }

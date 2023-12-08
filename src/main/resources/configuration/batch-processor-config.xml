@@ -19,4 +19,5 @@ http://www.springframework.org/schema/util/spring-util.xsd">
     <bean id="customerAgeValidationProcessor" class="org.example.batch.processor.CustomerAgeValidationProcessor"/>
     <bean id="customerIdnpValidationProcessor" class="org.example.batch.processor.CustomerIdnpValidationProcessor"/>
 
+    <bean id="bankDtoToBankEntityProcessor" class="org.example.batch.processor.BankDtoToBankEntityProcessor"/>
 </beans>

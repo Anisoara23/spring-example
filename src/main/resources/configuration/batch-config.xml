@@ -30,10 +30,11 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
     </bean>
 
     <batch:job id="importBankFromCsvToDbJob">
-        <batch:step id="importBankCsvToDbStep">
+        <batch:step id="importBankCsvToDbStep" next="moveImportedBanksCsvFileStep">
             <batch:tasklet task-executor="taskExecutor">
                 <batch:chunk
                         reader="csvFileBankReader"
+                        processor="bankDtoToBankEntityProcessor"
                         writer="dbBankWriter"
                         commit-interval="10000"
                 />

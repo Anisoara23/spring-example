@@ -3,6 +3,7 @@ package org.example.batch.preparedstatement;
 import org.example.entity.Bank;
 import org.springframework.batch.item.database.ItemPreparedStatementSetter;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -16,5 +17,6 @@ public class BankPreparedStatementSetter implements ItemPreparedStatementSetter<
         preparedStatement.setString(4, bank.getAddress().getCity());
         preparedStatement.setString(5, bank.getAddress().getStreet());
         preparedStatement.setString(6, bank.getAddress().getPostalCode());
+        preparedStatement.setDate(7, Date.valueOf(bank.getRegisteredAt()));
     }
 }
